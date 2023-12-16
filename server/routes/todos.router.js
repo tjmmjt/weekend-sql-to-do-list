@@ -7,7 +7,7 @@ const pool = require("../modules/pool");
 // 	- GET, POST, DELETE, PUT ===>>>
 // 	- SELECT, INSERT, DELETE, UPDATE
 
-// // TODO SELECT all data from weekend-to-do-app
+// // TODO GET/SELECT all data from weekend-to-do-app
 // GET
 router.get("/", (req, res) => {
   // declare queryText
@@ -28,12 +28,12 @@ router.get("/", (req, res) => {
     });
 });
 
-// TODO INSERT new todo to DB
+// // TODO POST/INSERT new todo to DB
 // post
 router.post("/", (req, res) => {
   // declare todo item and initialize with req.body
   let newToDo = req.body;
-  // declare queryText w/ bling values
+  // declare queryText and params w/ bling values
   const queryText = `
     INSERT INTO "todos" ("text", "isComplete")
     VALUES ($1, $2);
@@ -54,7 +54,37 @@ router.post("/", (req, res) => {
     });
 });
 
+// TODO PUT/UPDATE isComplete in DB
+// TODO this will take an ID param, then update the isComplete
 // put
+router.put("/:id", (req, res) => {
+  // declare isComplete and initialize w/ req.body.isComplete
+  let isComplete = req.body.isComplete;
+  console.log("Req.Body:", req.body);
+  // declare todoId, initialize req.params.id
+  let todoId = req.params.id;
+  console.log("Req.Params:", todoId);
+  // toggle todos, if isComplete === true/false, toggle
+  // declare queryText and params
+  let queryText;
+  let queryParams = [todoId];
+
+  if(isComplete === false) {
+    queryText = `UPDATE "todos" SET "isComplete"=true WHERE "id" = $1;`;
+  } else {
+    queryText = `UPDATE "todos" SET "isComplete"=false WHERE "id" = $1;`;
+  }
+  // send query
+  pool
+    .query(queryText, queryParams)
+    // then sendStatus
+    .then((result) => {
+      res.sendStatus(200);
+    })
+    .catch((error) => {
+      console.log("Could not update isComplete:", error);
+    });
+});
 
 // delete
 
