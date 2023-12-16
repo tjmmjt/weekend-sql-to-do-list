@@ -12,9 +12,9 @@
   <header>
     <h1>SQL TO-DO List</h1>
   </header>
-  <form>
+  <form onsubmit="submitToDo(event)">
     <input id="todoInput" type="text" placeholder="To-Do" data-testid="toDoTextInput">
-    <button id="submitBtn" data-testid="submitButton">Add</button>
+    <button id="submitBtn" onclick="submitToDo(event)" data-testid="submitButton">Add</button>
   </form>
 
   <table>

@@ -11,7 +11,31 @@ function handleGet() {
     })
 }
 
-// ! Create Render
+function handlePost(todoItem) {
+    // onclick, post new todo item, then get new list and render
+    axios.post('/todos', todoItem).then((response) => {
+        console.log("POST todo");
+        handleGet()
+    }) .catch((error) => {
+        console.log("Axios POST error:", error);
+    })
+}
+
+
+// ! Submit
+function submitToDo(event){
+    event.preventDefault()
+    // declare input variable and initialize w/ input.value
+    const todoInput = document.getElementById('todoInput').value
+    console.log("submitToDo:", todoInput);
+    // declare newToDo and initialize with object
+    const newToDo = {text: todoInput, isComplete: false}
+    // post newToDo
+    handlePost(newToDo)
+    document.getElementById('todoInput').value = ''
+}
+
+// ! Render
 // render todo items to DOM
 function render(todoItems) {
     // declare todoList, initialize with DOM id
