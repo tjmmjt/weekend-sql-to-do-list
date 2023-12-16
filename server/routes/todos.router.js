@@ -7,7 +7,7 @@ const pool = require("../modules/pool");
 // 	- GET, POST, DELETE, PUT ===>>>
 // 	- SELECT, INSERT, DELETE, UPDATE
 
-// TODO SELECT all data from weekend-to-do-app
+// // TODO SELECT all data from weekend-to-do-app
 // GET
 router.get("/", (req, res) => {
   // declare queryText
@@ -28,7 +28,31 @@ router.get("/", (req, res) => {
     });
 });
 
+// TODO INSERT new todo to DB
 // post
+router.post("/", (req, res) => {
+  // declare todo item and initialize with req.body
+  let newToDo = req.body;
+  // declare queryText w/ bling values
+  const queryText = `
+    INSERT INTO "todos" ("text", "isComplete")
+    VALUES ($1, $2);
+    `;
+  // declare params
+  const queryParams = [newToDo.text, newToDo.isComplete];
+
+  // send query with queryText and Params
+  pool
+    .query(queryText, queryParams)
+    //then sendStatus
+    .then((result) => {
+      console.log("Successfully added To-Do");
+      res.sendStatus(201);
+    }) // catch error
+    .catch((error) => {
+      console.log("Could not add To-Do", error);
+    });
+});
 
 // put
 
