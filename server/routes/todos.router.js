@@ -69,7 +69,7 @@ router.put("/:id", (req, res) => {
   let queryText;
   let queryParams = [todoId];
 
-  if(isComplete === false) {
+  if (isComplete === false) {
     queryText = `UPDATE "todos" SET "isComplete"=true WHERE "id" = $1;`;
   } else {
     queryText = `UPDATE "todos" SET "isComplete"=false WHERE "id" = $1;`;
@@ -78,7 +78,7 @@ router.put("/:id", (req, res) => {
   pool
     .query(queryText, queryParams)
     // then sendStatus
-    .then((result) => {
+    .then(() => {
       res.sendStatus(200);
     })
     .catch((error) => {
@@ -86,6 +86,29 @@ router.put("/:id", (req, res) => {
     });
 });
 
+// TODO Delete todo in DB
 // delete
+router.delete("/:id", (req, res) => {
+  // declare todoId and initialize with req.params.id
+  const todoId = req.params.id;
+
+  // declare queryText and params w/ bling values
+  const queryText = `DELETE FROM "todos" WHERE "id"=$1;`;
+  // declare params
+  const queryParams = [todoId];
+
+  // send query
+  pool
+    .query(queryText, queryParams)
+
+    // then sendStatus
+    .then(() => {
+      console.log("");
+      res.sendStatus(200);
+    })
+    .catch((error) => {
+      console.log("Cannot Delete:", error);
+    });
+});
 
 module.exports = router;
