@@ -96,15 +96,25 @@ function render(todoItems) {
   // declare todoList, initialize with DOM id
   let todoList = document.getElementById("todoList");
   // prevent stacking duplicates by setting innerhtml to empty string
+
+  
+
   todoList.innerHTML = "";
   // loop through todoItems param and append each item to DOM
   for (let item of todoItems) {
+    let button
+    if(item.isComplete === true){
+      button = `<td class="text-center align-middle"><button class="btn btn-success btn-large" onclick="handlePut(event)" data-testid="completeButton">Complete!</button></td>`
+    } else {
+      button = `<td class="text-center align-middle"><button class="btn btn-warning btn-large" onclick="handlePut(event)" data-testid="completeButton">Not Complete</button></td>`
+    }
+
     // wasn't appending, looked at other assignments and added parentheses?
     todoList.innerHTML += `
         <tr data-id=${item.id} data-iscomplete=${item.isComplete} data-testid="toDoItem">
-            <td>${item.text}</td>
-            <td><button onclick="handlePut(event)">${item.isComplete}</button></td>
-            <td><button onclick="handleDelete(event)">Delete</button></td>
+            <td class="align-middle">${item.text}</td>
+            ${button}
+            <td class="text-center align-middle"><button class="btn btn-secondary" onclick="handleDelete(event)" data-testid="deleteButton">Delete</button></td>
         </tr>
         `;
   }
