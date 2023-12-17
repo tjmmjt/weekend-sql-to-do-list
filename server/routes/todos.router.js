@@ -8,10 +8,10 @@ const pool = require("../modules/pool");
 // 	- SELECT, INSERT, DELETE, UPDATE
 
 // // TODO GET/SELECT all data from weekend-to-do-app
-// GET
+// get
 router.get("/", (req, res) => {
   // declare queryText
-  const queryText = `SELECT * FROM "todos"`;
+  const queryText = `SELECT * FROM "todos" ORDER BY "id"`;
   // send query to DB
   pool
     .query(queryText)
@@ -69,10 +69,10 @@ router.put("/:id", (req, res) => {
   let queryText;
   let queryParams = [todoId];
 
-  if (isComplete === false) {
-    queryText = `UPDATE "todos" SET "isComplete"=true WHERE "id" = $1;`;
-  } else {
+  if (isComplete === true) {
     queryText = `UPDATE "todos" SET "isComplete"=false WHERE "id" = $1;`;
+  } else {
+    queryText = `UPDATE "todos" SET "isComplete"=true WHERE "id" = $1;`;
   }
   // send query
   pool
@@ -86,7 +86,7 @@ router.put("/:id", (req, res) => {
     });
 });
 
-// TODO Delete todo in DB
+// // TODO Delete todo in DB
 // delete
 router.delete("/:id", (req, res) => {
   // declare todoId and initialize with req.params.id
