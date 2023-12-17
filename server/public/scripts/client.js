@@ -49,6 +49,34 @@ function handleDelete(event) {
     });
 }
 
+function handlePut(event) {
+  event.preventDefault();
+  // TODO toggle isComplete true/false
+  // declare todoId = dataset.id
+  let todoId = event.target.closest("tr").dataset.id;
+
+  // get string value of dataset.iscomplete
+  console.log(
+    "TR dataset.iscomplete",
+    event.target.closest("tr").dataset.iscomplete
+  );
+  // declare isComplete and initialize boolean with if comparison statement
+  let readValueForServer =
+    event.target.closest("tr").dataset.iscomplete === "true";
+  console.log("isComplete:", readValueForServer);
+
+  //axios put, pass id into url, and data containing object with isComplete key/boolean value
+  axios
+    .put(`/todos/${todoId}`, { isComplete: readValueForServer })
+    // then refresh
+    .then(() => {
+      handleGet();
+    })
+    .catch((error) => {
+      console.log("Axios Put Error:", error);
+    });
+}
+
 // ! Submit
 function submitToDo(event) {
   event.preventDefault();
@@ -75,7 +103,7 @@ function render(todoItems) {
     todoList.innerHTML += `
         <tr data-id=${item.id} data-iscomplete=${item.isComplete} data-testid="toDoItem">
             <td>${item.text}</td>
-            <td>${item.isComplete}</td>
+            <td><button onclick="handlePut(event)">${item.isComplete}</button></td>
             <td><button onclick="handleDelete(event)">Delete</button></td>
         </tr>
         `;
