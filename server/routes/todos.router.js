@@ -11,7 +11,7 @@ const pool = require("../modules/pool");
 // get
 router.get("/", (req, res) => {
   // declare queryText
-  const queryText = `SELECT * FROM "todos" ORDER BY "id"`;
+  const queryText = `SELECT * FROM "todos" ORDER BY "id";`;
   // send query to DB
   pool
     .query(queryText)
